@@ -133,7 +133,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
   return (
     <header
       ref={headerRef}
-      className="text-gray-100 sticky top-0 z-50 py-4 font-sans"
+      className="text-gray-100 sticky top-0 z-50 py-4 font-sans border-b md:border-0"
     >
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
