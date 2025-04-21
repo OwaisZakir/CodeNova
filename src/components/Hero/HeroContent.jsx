@@ -86,7 +86,7 @@ const HeroContent = () => {
         onClick={handleScrollToNext}
         onMouseEnter={handleMouseEnter} // Trigger animation on mouse enter
         onMouseLeave={handleMouseLeave} // Reset animation on mouse leave
-        className="flex bg-cyan-400 text-gray-100 py-3 px-8 rounded-lg text-lg md:text-xl font-semibold cursor-pointer hover:shadow-xl transform transition duration-300"
+        className="flex bg-cyan-400 text-gray-100 py-3 px-8 rounded-lg text-lg md:text-xl font-semibold cursor-pointer hover:shadow-xl transform "
       >
         <ArrowDownCircle size={24} className="mr-2" /> Explore Latest Posts
       </a>
