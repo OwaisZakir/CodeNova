@@ -13,17 +13,20 @@ function Layout() {
   }, []);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    localStorage.setItem("darkMode", !darkMode);
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("darkMode", newMode);
   };
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen flex flex-col bg-light text-dark dark:bg-gray-900 dark:text-gray-100">
+      <div className="min-h-screen flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="container mx-auto flex-1 p-6">
+
+        <main className="flex-1">
           <Outlet />
         </main>
+
         <Footer />
       </div>
     </div>

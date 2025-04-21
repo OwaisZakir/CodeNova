@@ -1,34 +1,29 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Search, User, LogOut, Sun, Moon } from "lucide-react";
 import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 const Header = ({ darkMode, toggleDarkMode }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const headerRef = useRef();
   const logoRef = useRef();
   const navRef = useRef();
   const iconsRef = useRef();
+  const userMenuRef = useRef();
+  const scrollTl = useRef();
+
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    // GSAP animation for header on page load
+  // Initial entrance animations
+  useGSAP(() => {
     gsap.from(headerRef.current, {
       opacity: 0,
       y: -50,
@@ -36,7 +31,6 @@ const Header = ({ darkMode, toggleDarkMode }) => {
       ease: "power3.out",
     });
 
-    // GSAP animation for logo on page load
     gsap.from(logoRef.current, {
       opacity: 0,
       scale: 0.5,
@@ -45,7 +39,6 @@ const Header = ({ darkMode, toggleDarkMode }) => {
       delay: 0.2,
     });
 
-    // GSAP animation for nav links on page load
     gsap.from(navRef.current.children, {
       opacity: 0,
       x: -50,
@@ -55,7 +48,6 @@ const Header = ({ darkMode, toggleDarkMode }) => {
       stagger: 0.1,
     });
 
-    // GSAP animation for icons on page load
     gsap.from(iconsRef.current.children, {
       opacity: 0,
       scale: 0.5,
@@ -66,28 +58,74 @@ const Header = ({ darkMode, toggleDarkMode }) => {
     });
   }, []);
 
+  // Scroll shrink effect with GSAP timeline
+  useGSAP(() => {
+    scrollTl.current = gsap.timeline({ paused: true });
+    scrollTl.current.to(headerRef.current, {
+      backgroundColor: "#1f2937",
+      height: "60px",
+      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+      backdropFilter: "blur(10px)",
+      duration: 0.3,
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     if (scrolled) {
-      gsap.to(headerRef.current, {
-        backgroundColor: "#1f2937",
-        height: "60px",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-        backdropFilter: "blur(10px)",
-        duration: 0.3,
-      });
+      scrollTl.current.play();
     } else {
-      gsap.to(headerRef.current, {
-        backgroundColor: "#111827",
-        height: "80px",
-        boxShadow: "none",
-        backdropFilter: "blur(0px)",
-        duration: 0.3,
-      });
+      scrollTl.current.reverse();
     }
   }, [scrolled]);
 
+  // Animate search overlay on open
+  useGSAP(() => {
+    if (searchOpen) {
+      gsap.fromTo(
+        ".search-box",
+        { y: -20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
+      );
+    }
+  }, [searchOpen]);
+
+  // Close search on Escape
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setSearchOpen(false);
+    };
+    if (searchOpen) window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [searchOpen]);
+
+  // Close user dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserDropdown(false);
+      }
+    };
+    if (userDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [userDropdown]);
+
+  // Close user dropdown on route change
+  useEffect(() => {
+    setUserDropdown(false);
+  }, [location]);
+
   const handleLogout = () => {
-    alert("Logged out successfully ✅");
+    console.log("Logged out ✅"); // TODO: Replace with actual logout logic
     setUserDropdown(false);
     navigate("/");
   };
@@ -108,7 +146,12 @@ const Header = ({ darkMode, toggleDarkMode }) => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav ref={navRef} className="hidden md:flex items-center space-x-8">
+        <nav
+          ref={navRef}
+          className="hidden md:flex items-center space-x-8"
+          role="navigation"
+          aria-label="Main Navigation"
+        >
           {["Home", "Blogs", "About", "Contact"].map((item) => (
             <Link
               key={item}
@@ -116,7 +159,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
               className="relative group text-gray-300 hover:text-cyan-400"
             >
               {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
             </Link>
           ))}
 
@@ -126,7 +169,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
             className="text-gray-300 hover:text-cyan-400"
             aria-label="Toggle Dark Mode"
           >
-            {darkMode ? <Sun size={22} /> : <Moon size={22} />}
+            {darkMode ? <Moon size={22} /> : <Sun size={22} />}
           </button>
 
           {/* Icons */}
@@ -139,11 +182,13 @@ const Header = ({ darkMode, toggleDarkMode }) => {
               <Search size={22} />
             </button>
 
-            <div className="relative">
+            <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserDropdown(!userDropdown)}
                 className="text-gray-300 hover:text-cyan-400"
                 aria-label="User Menu"
+                aria-haspopup="true"
+                aria-expanded={userDropdown}
               >
                 <User size={22} />
               </button>
@@ -161,7 +206,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
                   </button>
                   <button
                     onClick={() => {
-                      alert("Profile page coming soon!");
+                      console.log("Profile page coming soon!");
                       setUserDropdown(false);
                     }}
                     className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700"
@@ -180,11 +225,13 @@ const Header = ({ darkMode, toggleDarkMode }) => {
           </div>
         </nav>
 
-        {/* Mobile Menu Icon */}
+        {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-gray-100"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle Mobile Menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -192,14 +239,22 @@ const Header = ({ darkMode, toggleDarkMode }) => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-800 transform transition-all duration-500">
-          <nav className="flex flex-col space-y-4 px-4 py-6">
+        <div
+          id="mobile-menu"
+          className="md:hidden bg-gray-800 transform transition-all duration-500"
+        >
+          <nav
+            className="flex flex-col space-y-4 px-4 py-6"
+            role="menu"
+            aria-label="Mobile Navigation"
+          >
             {["Home", "Blogs", "About", "Contact"].map((item) => (
               <Link
                 key={item}
                 to={`/${item === "Home" ? "" : item.toLowerCase()}`}
                 className="hover:text-cyan-400"
                 onClick={() => setMenuOpen(false)}
+                role="menuitem"
               >
                 {item}
               </Link>
@@ -243,7 +298,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
       {/* Search Overlay */}
       {searchOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-          <div className="relative w-11/12 max-w-lg transition-all duration-500">
+          <div className="relative w-11/12 max-w-lg transition-all duration-500 search-box">
             <input
               type="text"
               placeholder="Search blogs..."
