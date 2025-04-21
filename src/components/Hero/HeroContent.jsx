@@ -1,14 +1,13 @@
 import React, { useRef } from "react";
-import { useGSAP } from "@gsap/react"; // Import the GSAP hook
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ArrowDownCircle } from "lucide-react"; // Import the ArrowDownCircle icon from lucide-react
+import { ArrowDownCircle } from "lucide-react";
 
 const HeroContent = () => {
   const headingRef = useRef();
   const paragraphRef = useRef();
   const buttonRef = useRef();
 
-  // GSAP animation using useGSAP hook
   useGSAP(() => {
     gsap.from(headingRef.current, {
       opacity: 0,
@@ -32,36 +31,37 @@ const HeroContent = () => {
       ease: "power3.out",
       delay: 0.4,
     });
-  }, []); // Empty dependency array to run the animation on component mount
+  }, []);
 
-  // Scroll to the next section on button click
   const handleScrollToNext = () => {
     const nextSection = document.getElementById("latest-posts");
     nextSection.scrollIntoView({ behavior: "smooth" });
   };
 
-  // GSAP animation for button mouse enter
   const handleMouseEnter = () => {
     gsap.to(buttonRef.current, {
-      scale: 1.1, // Slightly scale up the button
-      boxShadow: "0 4px 20px rgba(0, 255, 255, 0.4)", // Add shadow
-      duration: 0.3, // Duration of the animation
-      ease: "power2.out", // Easing effect
+      scale: 1.1,
+      boxShadow: "0 4px 20px rgba(0, 255, 255, 0.4)",
+      duration: 0.3,
+      ease: "power2.out",
     });
   };
 
-  // GSAP animation for button mouse leave
   const handleMouseLeave = () => {
     gsap.to(buttonRef.current, {
-      scale: 1, // Reset the scale
-      boxShadow: "none", // Remove shadow
-      duration: 0.3, // Duration of the animation
-      ease: "power2.out", // Easing effect
+      scale: 1,
+      boxShadow: "none",
+      duration: 0.3,
+      ease: "power2.out",
     });
   };
 
   return (
-    <div className="absolute -mt-20 md:-mt-14 inset-0 flex flex-col justify-center items-center text-center text-gray-100 px-6">
+    <div
+      className="absolute -mt-20 md:-mt-14 inset-0 flex flex-col justify-center items-center text-center text-gray-100 px-6"
+      role="region"
+      aria-label="Main hero content with introduction and scroll button"
+    >
       <h1
         ref={headingRef}
         className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 tracking-wide drop-shadow-lg"
@@ -80,15 +80,17 @@ const HeroContent = () => {
         help you grow.
       </p>
 
-      {/* Button with Lucide ArrowDownCircle Icon */}
       <a
         ref={buttonRef}
         onClick={handleScrollToNext}
-        onMouseEnter={handleMouseEnter} // Trigger animation on mouse enter
-        onMouseLeave={handleMouseLeave} // Reset animation on mouse leave
-        className="flex bg-cyan-400 text-gray-100 py-3 px-8 rounded-lg text-lg md:text-xl font-semibold cursor-pointer hover:shadow-xl transform "
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="flex bg-cyan-400 text-gray-100 py-3 px-8 rounded-lg text-lg md:text-xl font-semibold cursor-pointer hover:shadow-xl transform"
+        role="button"
+        aria-label="Scroll to latest posts"
       >
-        <ArrowDownCircle size={24} className="mr-2" /> Explore Latest Posts
+        <ArrowDownCircle size={24} className="mr-2" />
+        Explore Latest Posts
       </a>
     </div>
   );

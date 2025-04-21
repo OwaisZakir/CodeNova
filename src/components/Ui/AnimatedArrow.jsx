@@ -29,18 +29,13 @@ const AnimatedArrow = () => {
   return (
     <a
       href="#latest-posts"
-      className="
-        absolute 
-        left-1/2 
-        transform -translate-x-1/2 
-        bottom-24 
-        sm:bottom-32 
-        md:bottom-36
-        lg:bottom-40 
-        flex items-center justify-center
-      "
+      aria-label="Scroll to latest posts"
+      className="absolute left-1/2 transform -translate-x-1/2 bottom-24 sm:bottom-32 md:bottom-36 lg:bottom-40 flex items-center justify-center"
     >
-      <div className="flex flex-col items-center justify-center">
+      <div
+        className="flex flex-col items-center justify-center"
+        aria-hidden="true"
+      >
         {[...Array(3)].map((_, i) => (
           <span
             key={i}
