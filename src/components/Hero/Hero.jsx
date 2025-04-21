@@ -11,12 +11,12 @@ const Hero = () => {
       }}
     >
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
 
-      {/* Hero Content */}
+      {/* Main Content */}
       <HeroContent />
 
-      {/* SVG Wave */}
+      {/* Decorative Divider */}
       <HeroDivider />
     </section>
   );
