@@ -2,18 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- Primary Favicon -->
+    <link rel="icon" href="/favicons/favicon.icn" />
+
+    <!-- Apple Touch Icon (for iOS devices) -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicons/apple-touch-icon.png"
+    />
+
+    <!-- PNG Icons for Different Sizes -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicons/favicon-16x16.png"
+    />
+
+    <!-- Web Manifest -->
+    <link rel="manifest" href="/favicons/site.webmanifest" />
+
+    <!-- Viewport Meta Tag: Enables responsive scaling on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+
+    <!-- Website Title -->
+    <title>CodeNova | Blogging Website</title>
 
     <!-- ========= Fonts ========= -->
+    <!-- Google Fonts: Roboto and Source Code Pro -->
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Source+Code+Pro&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <!-- Root Div: React will render the app inside this -->
     <div id="root"></div>
+
+    <!-- Main JavaScript Module: Vite entry point -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
