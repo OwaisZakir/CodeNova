@@ -1,6 +1,20 @@
 html {
   scroll-behavior: smooth;
 }
+/* TailwindCSS config for code styling */
+pre {
+  background-color: #2d3748; /* Background for code blocks */
+  padding: 16px;
+  border-radius: 8px;
+  color: #e2e8f0; /* Light text color */
+  font-family: "Source Code Pro", monospace;
+  overflow-x: auto;
+}
+
+code {
+  font-family: "Source Code Pro", monospace;
+  color: #f6e05e; /* Code Highlight */
+}
 
 @tailwind base;
 @tailwind components;
