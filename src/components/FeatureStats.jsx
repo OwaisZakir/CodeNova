@@ -26,7 +26,7 @@ const blogStats = [
 
 const FeatureStats = () => {
   return (
-    <section className="pt-2 " aria-label="Platform Features and Stats">
+    <section className="pt-2 max-w-6xl mx-auto" aria-label="Platform Features and Stats">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {blogStats.map((item, index) => (

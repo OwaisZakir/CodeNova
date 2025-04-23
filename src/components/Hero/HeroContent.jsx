@@ -80,7 +80,7 @@ const HeroContent = () => {
         help you grow.
       </p>
 
-      <a
+      <button
         ref={buttonRef}
         onClick={handleScrollToNext}
         onMouseEnter={handleMouseEnter}
@@ -91,7 +91,7 @@ const HeroContent = () => {
       >
         <ArrowDownCircle size={24} className="mr-2" />
         Explore Latest Posts
-      </a>
+      </button>
     </div>
   );
 };
